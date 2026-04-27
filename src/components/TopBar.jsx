@@ -17,11 +17,12 @@ export default function DashboardTopbar({
     .slice(0, 2)
     .toUpperCase();
 
-  return (
-    <header className="sticky top-0 z-40 bg-white border-b border-gray-100 shadow-sm h-16 flex items-center px-4 gap-4">
-
+  
+return (
+  <header className="sticky top-0 z-40 bg-white border-b border-gray-100 shadow-sm h-16 flex items-center px-4 gap-4">
+ 
       {/* Mobile hamburger */}
-      <button
+      <button 
         className="md:hidden w-9 h-9 flex flex-col justify-center items-center gap-1.5 rounded-lg hover:bg-gray-100 transition"
         onClick={onMenuToggle}
         aria-label="Toggle menu"

@@ -177,11 +177,11 @@ export default function DashboardHome() {
       <div className="flex items-start justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-xl md:text-2xl font-bold text-[#1a2a5e]">
-            {getGreeting()}, {firstName}! 👋
+            {getGreeting()}, {firstName}! 
           </h1>
           <p className="text-gray-500 text-sm mt-1">
             {streak > 0
-              ? `You're on a ${streak}-day streak — keep it going!`
+              ? `You're on a ${streak}-day streak — keep it going👋`
               : "What would you like to study today?"
             }
           </p>
