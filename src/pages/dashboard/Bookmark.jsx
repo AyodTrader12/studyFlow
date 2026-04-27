@@ -153,7 +153,7 @@ export default function DashboardBookmarks() {
               : `${bookmarks.length} saved resource${bookmarks.length !== 1 ? "s" : ""}`}
           </p>
         </div>
-        {bookmarks.length > 0 && (
+        {/* {bookmarks.length > 0 && (
           <button
             onClick={() => navigate("/dashboard/resource-page")}
             className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition"
@@ -163,7 +163,7 @@ export default function DashboardBookmarks() {
             </svg>
             Find more resources
           </button>
-        )}
+        )} */}
       </div>
 
       {/* Stats strip — only shown when there are bookmarks */}

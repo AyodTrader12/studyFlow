@@ -118,7 +118,7 @@ function SubjectCard({ subject, totalCount, levelCounts, onCardClick }) {
 export default function DashboardSubjects() {
   const navigate = useNavigate();
 
-  const [subjectData,  setSubjectData]  = useState({});
+  const [ subjectData,  setSubjectData]  = useState({});
   const [loading,      setLoading]      = useState(true);
   const [searchTerm,   setSearchTerm]   = useState("");
 
