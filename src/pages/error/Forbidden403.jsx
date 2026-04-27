@@ -5,6 +5,7 @@
 
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "../../assets/studylogo.png"
 
 const QUESTIONS = [
   {
@@ -94,13 +95,14 @@ export default function Forbidden403() {
     <div className="min-h-screen bg-[#f0f3fa] flex flex-col items-center justify-center px-4 py-12">
 
       {/* Logo */}
-      <div className="flex items-center gap-2 mb-8">
-        <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
-          <path d="M8 12C8 10.3 9.3 9 11 9H24V39H11C9.3 39 8 37.7 8 36V12Z" fill="#1a2a5e"/>
-          <path d="M40 12C40 10.3 38.7 9 37 9H24V39H37C38.7 39 40 37.7 40 36V12Z" fill="#1a2a5e" opacity="0.7"/>
-        </svg>
-        <span className="text-lg font-extrabold text-[#1a2a5e]">StudyFlow</span>
-      </div>
+     <div className="flex items-center justify-center gap-2 mb-8">
+       <img 
+         src={logo} 
+         alt="StudyFlow Logo" 
+         className="h-12 w-auto"
+       />
+     
+     </div>
 
       <div className="w-full max-w-md">
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
