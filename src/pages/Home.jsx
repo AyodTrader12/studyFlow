@@ -130,7 +130,7 @@ const Home = () => {
             </p>
 
             <NavLink
-            to="/signup" 
+            to="/auth" 
             className="
              inline-block mt-6
              bg-[#1a2a5e] text-white 
