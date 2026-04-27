@@ -4,6 +4,7 @@
 
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 import DashBoardTopbar from "../components/TopBar"
 import LeftSideBar from "../components/LeftSideBar"
@@ -55,6 +56,7 @@ export default function DashboardLayout() {
         </aside>
 
       </div>
+      <Toaster />
     </div>
   );
 }

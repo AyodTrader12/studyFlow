@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import toast from "react-hot-toast";
 import { getPastQuestions } from "../../api/pastQuestionApi";
 
 const EXAM_META = {
@@ -88,7 +89,9 @@ export default function PastQuestionsBrowser() {
         });
         setQuestions(q);
       } catch (err) {
-        setError(err.message);
+        const message = err.message || "Failed to load past questions.";
+        toast.error(message);
+        setError(message);
       } finally {
         setLoading(false);
       }

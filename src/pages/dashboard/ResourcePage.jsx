@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useOutletContext, useSearchParams } from "react-router-dom";
+import toast from "react-hot-toast";
 import { useBookmarks } from "../../hook/UseApi";
 import { getResources } from "../../api/ResourceApi";
 
@@ -190,7 +191,9 @@ export default function ResourcesPage() {
       setPagination(data.pagination);
       setPage(pageNum);
     } catch (err) {
-      setError(err.message);
+      const message = err.message || "Failed to load resources.";
+      toast.error(message);
+      setError(message);
     } finally {
       setLoading(false);
       setLoadingMore(false);

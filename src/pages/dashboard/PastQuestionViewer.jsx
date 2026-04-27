@@ -4,6 +4,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { getPastQuestion } from "../../api/pastQuestionApi";
 
 const EXAM_META = {
@@ -98,7 +99,9 @@ function AIPanel({ question }) {
       const data = await res.json();
       setResponse(data.response);
     } catch (err) {
-      setError(err.message || "Something went wrong. Please try again.");
+      const message = err.message || "Something went wrong. Please try again.";
+      toast.error(message);
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -220,7 +223,11 @@ export default function PastQuestionViewer() {
   useEffect(() => {
     getPastQuestion(id)
       .then(({ question: q }) => setQuestion(q))
-      .catch((err) => setError(err.message))
+      .catch((err) => {
+        const message = err.message || "Failed to load past question.";
+        toast.error(message);
+        setError(message);
+      })
       .finally(() => setLoading(false));
   }, [id]);
 

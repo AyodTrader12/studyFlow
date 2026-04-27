@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { getPastQuestionsSummary } from "../../api/pastQuestionApi";
 
 const EXAM_META = {
@@ -152,7 +153,11 @@ export default function PastQuestions() {
   useEffect(() => {
     getPastQuestionsSummary()
       .then(({ summary: s }) => setSummary(s))
-      .catch((err) => setError(err.message))
+      .catch((err) => {
+        const message = err.message || "Failed to load past questions.";
+        toast.error(message);
+        setError(message);
+      })
       .finally(() => setLoading(false));
   }, []);
 

@@ -3,6 +3,7 @@
 // Components import these hooks — they never call the api files directly.
 
 import { useState, useEffect, useCallback } from "react";
+import toast from "react-hot-toast";
 
 import { getResources,getResource } from "../api/ResourceApi";
 import { getBookmarks, addBookmark, removeBookmark } from "../api/BookMarkApi";
@@ -27,7 +28,9 @@ export function useResources(filters = {}) {
       setResources(data.resources);
       setPagination(data.pagination);
     } catch (err) {
-      setError(err.message);
+      const message = err.message || "Failed to load resources.";
+      toast.error(message);
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -51,7 +54,11 @@ export function useResource(id) {
     setError(null);
     getResource(id)
       .then(({ resource: r }) => setResource(r))
-      .catch((err) => setError(err.message))
+      .catch((err) => {
+        const message = err.message || "Failed to load resource.";
+        toast.error(message);
+        setError(message);
+      })
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -70,7 +77,9 @@ export function useBookmarks() {
       const { bookmarks: data } = await getBookmarks();
       setBookmarks(data);
     } catch (err) {
-      setError(err.message);
+      const message = err.message || "Failed to load bookmarks.";
+      toast.error(message);
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -80,12 +89,17 @@ export function useBookmarks() {
 
   const toggle = async (resourceId) => {
     const isAlreadyBookmarked = bookmarks.some((b) => b._id === resourceId);
-    if (isAlreadyBookmarked) {
-      await removeBookmark(resourceId);
-      setBookmarks((prev) => prev.filter((b) => b._id !== resourceId));
-    } else {
-      await addBookmark(resourceId);
-      fetchData(); // refetch to get full resource data
+    try {
+      if (isAlreadyBookmarked) {
+        await removeBookmark(resourceId);
+        setBookmarks((prev) => prev.filter((b) => b._id !== resourceId));
+      } else {
+        await addBookmark(resourceId);
+        fetchData(); // refetch to get full resource data
+      }
+    } catch (err) {
+      const message = err.message || "Failed to update bookmark.";
+      toast.error(message);
     }
   };
 
@@ -198,7 +212,9 @@ export function useSummary(resourceId) {
       const { summary: s } = await generateSummary(resourceId);
       setSummary(s);
     } catch (err) {
-      setError(err.message);
+      const message = err.message || "Failed to generate summary.";
+      toast.error(message);
+      setError(message);
     } finally {
       setGenerating(false);
     }
