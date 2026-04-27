@@ -15,6 +15,13 @@ export const SUBJECTS = [
   "Further Mathematics",
   "Civic Education",
   "Commerce",
+  "Computer Science",
+  "Information Technology",
+  "Physical Education",
+  "Home Economics",
+  "Fine Arts",
+  "Technical Drawing",
+  "Health Science",
 ];
 
 export const LEVELS = ["All Levels", "JSS1", "JSS2", "JSS3", "SS1", "SS2", "SS3"];

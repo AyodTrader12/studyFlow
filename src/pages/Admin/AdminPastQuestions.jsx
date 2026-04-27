@@ -7,9 +7,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getPastQuestions, createPastQuestion, deletePastQuestion } from "../../api/pastQuestionApi";
 import { useEffect } from "react";
+import { SUBJECTS } from "../../utils/Resourceutils";
 
 const EXAM_BODIES = ["JAMB", "WAEC", "NECO", "GCE", "Junior WAEC", "Common Entrance", "Other"];
-const SUBJECTS    = ["Mathematics","English Language","Biology","Chemistry","Physics","Economics","Government","Literature","Geography","Agriculture","Further Mathematics","Civic Education","Commerce"];
 const LEVELS      = ["JSS","SS","University"];
 
 export default function AdminPastQuestions() {
@@ -91,7 +91,7 @@ export default function AdminPastQuestions() {
             <div><label className="block text-xs font-semibold text-gray-400 mb-1.5">Subject *</label>
               <select name="subject" value={form.subject} onChange={handleChange} className={`${inp} cursor-pointer`}>
                 <option value="">Select subject</option>
-                {SUBJECTS.map((s) => <option key={s}>{s}</option>)}
+                {SUBJECTS.filter((s) => s !== "All Subjects").map((s) => <option key={s}>{s}</option>)}
               </select>
               {errors.subject && <p className="text-red-400 text-xs mt-1">{errors.subject}</p>}</div>
             <div><label className="block text-xs font-semibold text-gray-400 mb-1.5">Level</label>

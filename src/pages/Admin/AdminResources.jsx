@@ -8,11 +8,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useResources } from "../../hook/UseApi";
 import { createResource, deleteResource } from "../../api/ResourceApi";
-const SUBJECTS = [
-  "Mathematics", "English Language", "Biology", "Chemistry", "Physics",
-  "Economics", "Government", "Literature", "Geography", "Agriculture",
-  "Further Mathematics", "Civic Education", "Commerce",
-];
+import { SUBJECTS } from "../../utils/Resourceutils";
 
 const LEVELS = ["JSS1", "JSS2", "JSS3", "SS1", "SS2", "SS3", "All Levels"];
 
@@ -331,7 +327,7 @@ export default function AdminResources() {
               <label className="block text-xs font-semibold text-gray-600 mb-1.5">Subject *</label>
               <select name="subject" value={form.subject} onChange={handleChange} className={`${inputClass("subject")} cursor-pointer`}>
                 <option value="">Select subject</option>
-                {SUBJECTS.map((s) => <option key={s}>{s}</option>)}
+                {SUBJECTS.filter((s) => s !== "All Subjects").map((s) => <option key={s}>{s}</option>)}
               </select>
               {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject}</p>}
             </div>

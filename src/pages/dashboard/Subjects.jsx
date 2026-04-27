@@ -23,6 +23,13 @@ const SUBJECTS = [
   { name: "Further Mathematics", emoji: "🧮", color: "blue",   levels: "ss" },
   { name: "Civic Education",     emoji: "🤝", color: "orange", levels: "both" },
   { name: "Commerce",            emoji: "💼", color: "purple", levels: "ss" },
+  { name: "Computer Science",    emoji: "💻", color: "blue",   levels: "ss" },
+  { name: "Information Technology", emoji: "🖥️", color: "teal", levels: "ss" },
+  { name: "Physical Education",  emoji: "🏃", color: "orange", levels: "both" },
+  { name: "Home Economics",      emoji: "🏠", color: "pink",   levels: "both" },
+  { name: "Fine Arts",           emoji: "🎨", color: "purple", levels: "both" },
+  { name: "Technical Drawing",   emoji: "📏", color: "gray",   levels: "ss" },
+  { name: "Health Science",      emoji: "🩺", color: "green",  levels: "both" },
 ];
 
 const JSS_LEVELS = ["JSS1", "JSS2", "JSS3"];

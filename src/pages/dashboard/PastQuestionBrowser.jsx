@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { getPastQuestions } from "../../api/pastQuestionApi";
+import { SUBJECTS } from "../../utils/Resourceutils";
 
 const EXAM_META = {
   "JAMB":           { emoji: "🎓", color: "bg-blue-50 text-blue-700 border-blue-200" },
@@ -16,12 +17,6 @@ const EXAM_META = {
   "Common Entrance":{ emoji: "✏️", color: "bg-pink-50 text-pink-700 border-pink-200" },
   "Other":          { emoji: "📄", color: "bg-gray-50 text-gray-700 border-gray-200" },
 };
-
-const SUBJECTS = [
-  "All Subjects", "Mathematics", "English Language", "Biology",
-  "Chemistry", "Physics", "Economics", "Government", "Literature",
-  "Geography", "Agriculture", "Further Mathematics", "Civic Education", "Commerce",
-];
 
 function YearCard({ question, onClick }) {
   return (

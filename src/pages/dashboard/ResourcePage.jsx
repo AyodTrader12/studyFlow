@@ -8,14 +8,8 @@ import { useNavigate, useOutletContext, useSearchParams } from "react-router-dom
 import toast from "react-hot-toast";
 import { useBookmarks } from "../../hook/UseApi";
 import { getResources } from "../../api/ResourceApi";
+import { SUBJECTS, LEVELS } from "../../utils/Resourceutils";
 
-const SUBJECTS = [
-  "All Subjects", "Mathematics", "English Language", "Biology",
-  "Chemistry", "Physics", "Economics", "Government", "Literature",
-  "Geography", "Agriculture", "Further Mathematics", "Civic Education", "Commerce",
-];
-
-const LEVELS = ["All Levels", "JSS1", "JSS2", "JSS3", "SS1", "SS2", "SS3"];
 
 const TYPES = [
   { value: "All Types", label: "All Types" },
