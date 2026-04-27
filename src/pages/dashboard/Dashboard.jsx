@@ -186,7 +186,7 @@ export default function DashboardHome() {
             }
           </p>
         </div>
-        <button
+        {/* <button
           onClick={() => navigate("/dashboard/resource-page")}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#1a2a5e] text-white text-sm font-bold hover:bg-[#14234d] transition active:scale-95 flex-shrink-0"
         >
@@ -194,7 +194,7 @@ export default function DashboardHome() {
             <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
           </svg>
           Browse Resources
-        </button>
+        </button> */}
       </div>
 
       {/* ── Stats strip ── */}

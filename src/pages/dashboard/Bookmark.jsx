@@ -7,7 +7,7 @@
 // - Pulls real data from GET /api/bookmarks
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useBookmarks } from "../../hook/UseApi";
 
 const TYPE_META = {
@@ -106,6 +106,7 @@ function BookmarkCard({ resource, onRemove, onClick, gradientIdx }) {
 }
 
 export default function DashboardBookmarks() {
+  const { searchQuery } = useOutletContext();
   const navigate = useNavigate();
   const { bookmarks, loading, error, toggle } = useBookmarks();
 
@@ -116,10 +117,12 @@ export default function DashboardBookmarks() {
   // Apply filters
   const filtered = bookmarks.filter((r) => {
     const matchSearch =
-      !search ||
-      r.title?.toLowerCase().includes(search.toLowerCase()) ||
-      r.subject?.toLowerCase().includes(search.toLowerCase()) ||
-      r.topic?.toLowerCase().includes(search.toLowerCase());
+      (!searchQuery || r.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+       r.subject?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+       r.topic?.toLowerCase().includes(searchQuery.toLowerCase())) &&
+      (!search || r.title?.toLowerCase().includes(search.toLowerCase()) ||
+       r.subject?.toLowerCase().includes(search.toLowerCase()) ||
+       r.topic?.toLowerCase().includes(search.toLowerCase()));
     const matchType = typeFilter === "all" || r.type === typeFilter;
     return matchSearch && matchType;
   });

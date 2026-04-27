@@ -6,7 +6,7 @@
 // spanning the entire row so no other card is affected by its height.
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { getResources } from "../../api/ResourceApi";
 
 const SUBJECTS = [
@@ -116,6 +116,7 @@ function SubjectCard({ subject, totalCount, levelCounts, onCardClick }) {
 
 // ── Main page ─────────────────────────────────────────────────────────────────
 export default function DashboardSubjects() {
+  const { searchQuery } = useOutletContext();
   const navigate = useNavigate();
 
   const [ subjectData,  setSubjectData]  = useState({});
@@ -157,7 +158,8 @@ export default function DashboardSubjects() {
   };
 
   const filtered = SUBJECTS.filter((s) =>
-    !searchTerm || s.name.toLowerCase().includes(searchTerm.toLowerCase())
+    (!searchQuery || s.name.toLowerCase().includes(searchQuery.toLowerCase())) &&
+    (!searchTerm || s.name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const totalResources = Object.values(subjectData).reduce(
@@ -236,9 +238,14 @@ export default function DashboardSubjects() {
       {/* No search results */}
       {!loading && filtered.length === 0 && (
         <div className="text-center py-16">
-          <p className="text-sm text-gray-400">No subjects match "{searchTerm}"</p>
+          <p className="text-sm text-gray-400">
+            No subjects match "{searchQuery || searchTerm}"
+          </p>
           <button
-            onClick={() => setSearchTerm("")}
+            onClick={() => {
+              setSearchTerm("");
+              // Note: searchQuery is managed by the layout, so we can't clear it here
+            }}
             className="mt-2 text-xs text-[#3b6fd4] font-semibold hover:underline"
           >
             Clear search
