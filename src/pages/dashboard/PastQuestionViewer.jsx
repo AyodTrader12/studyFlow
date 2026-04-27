@@ -81,7 +81,7 @@ function AIPanel({ question }) {
         userPrompt = `Give me a concise study summary of "${prompt}" as it appears in ${question.examBody} ${question.subject} exams in Nigeria.\n\nInclude:\n1. Key definitions\n2. Important facts to memorise\n3. Common exam questions on this topic\n4. Tips for answering these questions`;
       }
 
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/ai/ask`, {
+      const res = await fetch(`${import.meta.env.VITE_RENDER_URL}/api/ai/ask`, {
         method:  "POST",
         credentials: "include",
         headers: {
