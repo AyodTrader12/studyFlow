@@ -38,6 +38,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Forbidden403 from "../pages/error/Forbidden403";
 import NotFound404 from "../pages/error/NotFound404";
 import ServerError500 from "../pages/error/ServerError500";
+import ResetOtp from "../pages/auth/ResetOtp";
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +60,7 @@ export const router = createBrowserRouter([
       { path: "verify", element: <Verify /> },
       { path: "login", element: <Login /> },
       { path: "forgot-password", element: <Forgotpassword /> },
+      {path:"reset-otp",element:<ResetOtp/>},
       { path: "reset-password", element: <ResetPassword /> },
     ],
   },

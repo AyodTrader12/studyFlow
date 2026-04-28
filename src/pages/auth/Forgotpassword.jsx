@@ -20,8 +20,8 @@ export function ForgotPassword() {
     setError("");
     try {
       await forgotPassword({ email: email.trim() });
-      // Navigate to reset page passing the email
-      navigate("auth/reset-password", { state: { email: email.trim() } });
+      // Navigate to reset OTP page to verify the code first
+      navigate("/auth/reset-otp", { state: { email: email.trim(), purpose: "forgot-password" } });
     } catch (err) {
       toast.error(err.message || "Failed to send code. Please try again.");
     } finally {
