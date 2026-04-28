@@ -5,7 +5,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { verifyOtp, resendOtp } from "../../api/UserApi";
+import { resetPassword, resendOtp } from "../../api/UserApi";
 import toast from 'react-hot-toast';
 import logo from "../../assets/studylogo.png"
 
@@ -104,7 +104,7 @@ export default function Verify() {
     setLoading(true);
     setError("");
     try {
-      await verifyOtp({ email, otp });
+      await resetPassword({ email, otp });
       setSuccess("otp verified! Redirecting to reset password...");
       setTimeout(() => navigate("/auth/reset-password", { state: { verified: true, email, otp } }), 1500);
     } catch (err) {
@@ -224,7 +224,7 @@ export default function Verify() {
                 </svg>
                 Verifying...
               </span>
-            ) : "Verify Email"}
+            ) : "Verify otp"}
           </button>
 
           {/* Resend */}

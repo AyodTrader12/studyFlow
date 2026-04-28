@@ -47,7 +47,7 @@ export default function ResetPassword() {
     setLoading(true);
     setError("");
     try {
-      await resetPassword({ email, otp, newPassword: newPwd });
+      await resetPassword({ email,  newPassword: newPwd });
       toast.success("Password reset successfully!");
       navigate("/auth/login", { state: { passwordReset: true } });
     } catch (err) {
