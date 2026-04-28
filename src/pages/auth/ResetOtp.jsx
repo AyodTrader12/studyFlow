@@ -5,7 +5,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { resetPassword, resendOtp } from "../../api/UserApi";
+import { verifyOtp, resendOtp } from "../../api/UserApi";
 import toast from 'react-hot-toast';
 import logo from "../../assets/studylogo.png"
 
@@ -104,8 +104,8 @@ export default function Verify() {
     setLoading(true);
     setError("");
     try {
-      await resetPassword({ email, otp });
-      setSuccess("otp verified! Redirecting to reset password...");
+      await verifyOtp({ email, otp });
+      setSuccess("OTP verified! Redirecting to reset password...");
       setTimeout(() => navigate("/auth/reset-password", { state: { verified: true, email, otp } }), 1500);
     } catch (err) {
       toast.error(err.message || "Verification failed. Please try again.");
@@ -163,10 +163,10 @@ export default function Verify() {
           </div>
 
           <h1 className="text-2xl font-extrabold text-[#1a2a5e] text-center mb-2">
-            Check your email
+            Verify Your Password Reset
           </h1>
           <p className="text-gray-500 text-sm text-center mb-1 leading-relaxed">
-            We sent a 6-digit verification code to
+            We sent a 6-digit reset code to
           </p>
           <p className="text-[#1a2a5e] font-bold text-sm text-center mb-6 break-all">
             {email}
