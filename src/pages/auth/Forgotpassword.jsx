@@ -21,7 +21,7 @@ export function ForgotPassword() {
     try {
       await forgotPassword({ email: email.trim() });
       // Navigate to reset page passing the email
-      navigate("/reset-password", { state: { email: email.trim() } });
+      navigate("auth/reset-password", { state: { email: email.trim() } });
     } catch (err) {
       toast.error(err.message || "Failed to send code. Please try again.");
     } finally {
