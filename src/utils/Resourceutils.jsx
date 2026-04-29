@@ -22,6 +22,10 @@ export const SUBJECTS = [
   "Fine Arts",
   "Technical Drawing",
   "Health Science",
+  "Financial Accounting", 
+   "Basic-science",       
+   "Basic-technology",    
+   "Business-studies",
 ];
 
 export const LEVELS = ["All Levels", "JSS1", "JSS2", "JSS3", "SS1", "SS2", "SS3"];
