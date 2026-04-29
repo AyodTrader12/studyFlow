@@ -7,6 +7,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { resendOtp } from "../../api/UserApi";
 import { StepIndicator } from "../auth/Forgotpassword";
+import toast from 'react-hot-toast';
 import logo from "../../assets/studylogo.png"
 
 
@@ -23,7 +24,6 @@ export default function VerifyResetOtp() {
   const [digits,    setDigits]    = useState(["", "", "", "", "", ""]);
   const [loading,   setLoading]   = useState(false);
   const [resending, setResending] = useState(false);
-  const [error,     setError]     = useState("");
   const [countdown, setCountdown] = useState(RESEND_COUNTDOWN);
 
   const inputRefs = useRef([]);
@@ -47,7 +47,6 @@ export default function VerifyResetOtp() {
     const next  = [...digits];
     next[idx]   = digit;
     setDigits(next);
-    setError("");
     if (digit && idx < 5) focusInput(idx + 1);
     // Auto-submit when all 6 filled
     if (digit && idx === 5) {
@@ -92,12 +91,11 @@ export default function VerifyResetOtp() {
     if (loading) return;
     const otp = (code || digits.join("")).trim();
     if (otp.length !== 6) {
-      setError("Please enter all 6 digits.");
+      toast.error("Please enter all 6 digits.");
       return;
     }
 
     setLoading(true);
-    setError("");
 
     try {
       const res = await fetch(`${BASE_URL}/api/auth/verify-reset-otp`, {
@@ -110,7 +108,7 @@ export default function VerifyResetOtp() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.message || "Incorrect code. Please try again.");
+        toast.error("Incorrect code. Please try again.");
         setDigits(["", "", "", "", "", ""]);
         focusInput(0);
         return;
@@ -119,14 +117,14 @@ export default function VerifyResetOtp() {
       // OTP verified — move to reset password page
       // Pass resetToken (a short-lived JWT) so the reset page can prove
       // the OTP was already verified
-      navigate("/reset-password", {
+      navigate("/auth/reset-password", {
         state: {
           email,
           resetToken: data.resetToken,
         },
       });
     } catch {
-      setError("Something went wrong. Please try again.");
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -135,14 +133,13 @@ export default function VerifyResetOtp() {
   const handleResend = async () => {
     if (countdown > 0 || resending) return;
     setResending(true);
-    setError("");
     try {
       await resendOtp({ email, purpose: "reset" });
       setCountdown(RESEND_COUNTDOWN);
       setDigits(["", "", "", "", "", ""]);
       focusInput(0);
     } catch (err) {
-      setError(err.message || "Failed to resend. Please try again.");
+      toast.error("Failed to resend. Please try again.");
     } finally {
       setResending(false);
     }
@@ -187,14 +184,6 @@ export default function VerifyResetOtp() {
 
           {/* Step indicator — Step 2 active */}
           <StepIndicator active={1} />
-
-          {/* Error */}
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl
-                            text-red-600 text-sm text-center">
-              {error}
-            </div>
-          )}
 
           {/* 6 OTP boxes */}
           <div className="flex justify-center gap-2.5 mb-5" onPaste={handlePaste}>

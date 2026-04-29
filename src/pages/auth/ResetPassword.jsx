@@ -7,6 +7,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { StepIndicator } from "../auth/Forgotpassword";
+import toast from 'react-hot-toast';
 import logo from "../../assets/studylogo.png"
 const BASE_URL = import.meta.env.VITE_RENDER_URL;
 
@@ -76,7 +77,6 @@ export default function ResetPassword() {
   const [showNew,    setShowNew]    = useState(false);
   const [showConf,   setShowConf]   = useState(false);
   const [loading,    setLoading]    = useState(false);
-  const [error,      setError]      = useState("");
 
   // Redirect if accessed directly without going through OTP verification
   if (!email || !resetToken) {
@@ -100,14 +100,13 @@ export default function ResetPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
     if (newPwd.length < 6) {
-      setError("Password must be at least 6 characters.");
+      toast.error("Password must be at least 6 characters.");
       return;
     }
     if (newPwd !== confirmPwd) {
-      setError("Passwords do not match.");
+      toast.error("Passwords do not match.");
       return;
     }
 
@@ -130,7 +129,7 @@ export default function ResetPassword() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.message || "Failed to reset password. Please try again.");
+        toast.error("Failed to reset password. Please try again.");
         return;
       }
 
@@ -138,7 +137,7 @@ export default function ResetPassword() {
       navigate("/login", { state: { passwordReset: true } });
 
     } catch {
-      setError("Something went wrong. Please try again.");
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -180,13 +179,6 @@ export default function ResetPassword() {
 
           {/* Step indicator — Step 3 active */}
           <StepIndicator active={2} />
-
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl
-                            text-red-600 text-sm text-center">
-              {error}
-            </div>
-          )}
 
           <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
 

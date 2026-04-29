@@ -52,7 +52,7 @@ export default function SignUp() {
       const msg =
         err.status === 409
           ? "An account with this email already exists."
-          : err.message || "Something went wrong. Please try again.";
+          : "Error creating account. Please try again.";
       toast.error(msg);
     } finally {
       setLoading(false);

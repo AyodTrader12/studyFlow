@@ -108,7 +108,7 @@ export default function Verify() {
       setSuccess("Email verified! Redirecting to login...");
       setTimeout(() => navigate("/auth/login", { state: { verified: true } }), 1500);
     } catch (err) {
-      toast.error(err.message || "Verification failed. Please try again.");
+      toast.error("Verification failed. Please try again.");
       // Clear digits on error so student can re-enter
       setDigits(["", "", "", "", "", ""]);
       focusInput(0);
@@ -129,7 +129,7 @@ export default function Verify() {
       setSuccess("A new code has been sent to your email.");
       setTimeout(() => setSuccess(""), 4000);
     } catch (err) {
-      toast.error(err.message || "Failed to resend.");
+      toast.error("Failed to resend. Please try again.");
     } finally {
       setResending(false);
     }

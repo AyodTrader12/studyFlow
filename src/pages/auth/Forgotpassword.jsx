@@ -6,6 +6,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { forgotPassword } from "../../api/UserApi";
+import toast from 'react-hot-toast';
 import logo from "../../assets/studylogo.png"
 
 export default function ForgotPassword() {
@@ -13,22 +14,20 @@ export default function ForgotPassword() {
 
   const [email,   setEmail]   = useState("");
   const [loading, setLoading] = useState(false);
-  const [error,   setError]   = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email.trim()) {
-      setError("Please enter your email address.");
+      toast.error("Please enter your email address.");
       return;
     }
     if (!/\S+@\S+\.\S+/.test(email)) {
-      setError("Enter a valid email address.");
+      toast.error("Enter a valid email address.");
       return;
     }
 
     setLoading(true);
-    setError("");
 
     try {
       await forgotPassword({ email: email.trim() });
@@ -37,7 +36,7 @@ export default function ForgotPassword() {
     } finally {
       setLoading(false);
       // Always move to OTP step even if backend says email doesn't exist
-      navigate("/verify-reset", { state: { email: email.trim() } });
+      navigate("/auth/verify-reset", { state: { email: email.trim() } });
     }
   };
 
@@ -77,13 +76,6 @@ export default function ForgotPassword() {
           {/* Step indicator — Step 1 active */}
           <StepIndicator active={0} />
 
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl
-                            text-red-600 text-sm text-center">
-              {error}
-            </div>
-          )}
-
           <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
             <div>
               <label className="block text-xs font-semibold text-gray-600 mb-1.5">
@@ -101,7 +93,7 @@ export default function ForgotPassword() {
                   type="email"
                   placeholder="you@example.com"
                   value={email}
-                  onChange={(e) => { setEmail(e.target.value); setError(""); }}
+                onChange={(e) => { setEmail(e.target.value); }}
                   className="w-full py-3 text-sm bg-transparent outline-none
                              text-gray-700 placeholder-gray-400"
                   autoFocus

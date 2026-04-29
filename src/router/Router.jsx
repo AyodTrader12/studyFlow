@@ -60,7 +60,7 @@ export const router = createBrowserRouter([
       { path: "verify", element: <Verify /> },
       { path: "login", element: <Login /> },
       { path: "forgot-password", element: <Forgotpassword /> },
-      {path:"reset-otp",element:<ResetOtp/>},
+      {path:"verify-reset",element:<ResetOtp/>},
       { path: "reset-password", element: <ResetPassword /> },
     ],
   },
