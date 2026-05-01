@@ -44,13 +44,13 @@ const EXAM_META = {
     color:    "teal",
     desc:     "Junior secondary school certificate exam",
   },
-  "Common Entrance": {
-    emoji:    "✏️",
-    fullName: "National Common Entrance Examination",
-    short:    "Primary → JSS1",
-    color:    "pink",
-    desc:     "Entry into federal government colleges",
-  },
+  // "Common Entrance": {
+  //   emoji:    "✏️",
+  //   fullName: "National Common Entrance Examination",
+  //   short:    "Primary → JSS1",
+  //   color:    "pink",
+  //   desc:     "Entry into federal government colleges",
+  // },
   "Other": {
     emoji:    "📄",
     fullName: "Other Examinations",
