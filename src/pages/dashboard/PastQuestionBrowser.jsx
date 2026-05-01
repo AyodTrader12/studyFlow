@@ -14,7 +14,7 @@ const EXAM_META = {
   "NECO":           { emoji: "📝", color: "bg-purple-50 text-purple-700 border-purple-200" },
   "GCE":            { emoji: "🏅", color: "bg-orange-50 text-orange-700 border-orange-200" },
   "Junior WAEC":    { emoji: "📗", color: "bg-teal-50 text-teal-700 border-teal-200" },
-  "Common Entrance":{ emoji: "✏️", color: "bg-pink-50 text-pink-700 border-pink-200" },
+  // "Common Entrance":{ emoji: "✏️", color: "bg-pink-50 text-pink-700 border-pink-200" },
   "Other":          { emoji: "📄", color: "bg-gray-50 text-gray-700 border-gray-200" },
 };
 

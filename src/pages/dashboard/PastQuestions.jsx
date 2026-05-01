@@ -177,7 +177,7 @@ export default function PastQuestions() {
   }
 
   // Show all exam bodies in a fixed order even if no data yet
-  const EXAM_ORDER = ["JAMB", "WAEC", "NECO", "GCE", "Junior WAEC", "Common Entrance", "Other"];
+  const EXAM_ORDER = ["JAMB", "WAEC", "NECO", "GCE", "Junior WAEC", "Other"];
 
   return (
     <div className="flex flex-col gap-7">
