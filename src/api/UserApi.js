@@ -1,51 +1,50 @@
 // src/services/api/userApi.js
 import { get, post, patch } from "./client";
 
-// ── Auth ──────────────────────────────────────────────────────────────────────
-
 /** Create a new account. Backend sends OTP email. */
 export const signUp = (data) =>
   post("/api/auth/signup", data);
 // data: { displayName, email, password }
-// returns: { message, email }
 
-/** Verify 6-digit OTP code after sign up. */
+/** Verify 6-digit OTP.
+ *  purpose: "verify"  → email verification after signup
+ *  purpose: "reset"   → step 2 of password reset flow
+ */
 export const verifyOtp = (data) =>
   post("/api/auth/verify-otp", data);
-// data: { email, otp }
-// returns: { message }
+// data: { email, otp, purpose?: "verify" | "reset" }
 
-/** Resend a fresh OTP code. */
+/** Resend a fresh OTP. */
 export const resendOtp = (data) =>
   post("/api/auth/resend-otp", data);
 // data: { email, purpose: "verify" | "reset" }
 
-/** Log in with email + password. Backend sets httpOnly cookie. */
+/** Log in. Backend sets httpOnly cookie. */
 export const login = (data) =>
   post("/api/auth/login", data);
 // data: { email, password }
-// returns: { message, user }
 
-/** Log out — clears the JWT cookie on the backend. */
+/** Log out — clears the JWT cookie. */
 export const logout = () =>
   post("/api/auth/logout");
 
-/** Request a password reset OTP. */
+/** Step 1 of password reset — send OTP to email. */
 export const forgotPassword = (data) =>
   post("/api/auth/forgot-password", data);
 // data: { email }
 
-/** Verify reset OTP and set a new password. */
+/** Step 3 of password reset — set new password.
+ *  OTP was already verified in step 2 (/verify-otp with purpose: "reset").
+ *  No OTP needed here.
+ */
 export const resetPassword = (data) =>
   post("/api/auth/reset-password", data);
-// data: { email, otp, newPassword }
+// data: { email, newPassword }
 
 /** Change password while logged in (from Settings page). */
 export const changePassword = (data) =>
   post("/api/auth/change-password", data);
 // data: { currentPassword, newPassword }
-
-// ── Profile ───────────────────────────────────────────────────────────────────
 
 /** Get the current logged-in user's profile. */
 export const getMe = () =>
