@@ -36,7 +36,7 @@ export default function ForgotPassword() {
     } finally {
       setLoading(false);
       // Always move to OTP step even if backend says email doesn't exist
-      navigate("/auth/verify-reset", { state: { email: email.trim() } });
+      navigate("auth/verify-reset", { state: { email: email.trim() } });
     }
   };
 
