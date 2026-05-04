@@ -207,8 +207,7 @@ export default function VerifyResetOtp() {
                               ? "border-[#1a2a5e] bg-[#f0f3fa] text-[#1a2a5e]"
                               : "border-gray-200 bg-white text-gray-700"
                             }
-                            focus:border-[#1a2a5e] focus:bg-[#f0f3fa]
-                            ${error ? "border-red-300 bg-red-50" : ""}`}
+                            focus:border-[#1a2a5e] focus:bg-[#f0f3fa]`}
                 style={{ height: "52px" }}
               />
             ))}
