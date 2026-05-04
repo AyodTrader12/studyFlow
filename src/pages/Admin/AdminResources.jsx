@@ -4,7 +4,7 @@
 // Shows a preview before saving.
 
 import { useState, useEffect } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext,useRef} from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useResources } from "../../hook/UseApi";
 import { createResource, deleteResource } from "../../api/ResourceApi";
