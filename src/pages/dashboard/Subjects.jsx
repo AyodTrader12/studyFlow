@@ -8,6 +8,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { getResources } from "../../api/ResourceApi";
+import toast from 'react-hot-toast';
 
 const SUBJECTS = [
   { name: "Mathematics",         emoji: "📐", color: "blue",   levels: "both" },
@@ -142,7 +143,7 @@ export default function DashboardSubjects() {
         }
         setSubjectData(map);
       } catch (err) {
-        console.error("Failed to fetch subject counts:", err);
+        toast.error("Something went wrong. Please try again.");
       } finally {
         setLoading(false);
       }

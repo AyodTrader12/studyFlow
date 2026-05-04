@@ -109,7 +109,7 @@ export default function ResourceViewer() {
   const navigate = useNavigate();
   useOutletContext(); // keeps context alive
 
-  const { resource, loading, error } = useResource(id);
+  const { resource, loading } = useResource(id);
   const { markViewed }               = useProgress();
   const { isBookmarked, toggle }     = useBookmarks();
 
@@ -140,9 +140,9 @@ export default function ResourceViewer() {
     </div>
   );
 
-  if (error || !resource) return (
+  if (!resource) return (
     <div className="flex flex-col items-center gap-4 py-20 text-center">
-      <p className="text-red-500 text-sm">{error || "Resource not found."}</p>
+      <p className="text-red-500 text-sm">Resource not found.</p>
       <button onClick={() => navigate(-1)} className="text-sm text-[#1a2a5e] font-semibold hover:underline">
         ← Go back
       </button>

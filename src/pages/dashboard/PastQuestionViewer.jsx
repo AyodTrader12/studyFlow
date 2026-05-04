@@ -23,7 +23,6 @@ function AIPanel({ question }) {
   const [prompt,    setPrompt]    = useState("");
   const [response,  setResponse]  = useState("");
   const [loading,   setLoading]   = useState(false);
-  const [error,     setError]     = useState("");
 
   const MODES = [
     {
@@ -61,7 +60,6 @@ function AIPanel({ question }) {
   const handleAsk = async () => {
     if (!prompt.trim()) return;
     setLoading(true);
-    setError("");
     setResponse("");
 
     try {
@@ -99,9 +97,7 @@ function AIPanel({ question }) {
       const data = await res.json();
       setResponse(data.response);
     } catch (err) {
-      const message = err.message || "Something went wrong. Please try again.";
-      toast.error(message);
-      setError(message);
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -130,7 +126,7 @@ function AIPanel({ question }) {
           {MODES.map((m) => (
             <button
               key={m.key}
-              onClick={() => { setMode(m.key); setResponse(""); setError(""); }}
+              onClick={() => { setMode(m.key); setResponse(""); }}
               className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border text-left transition ${
                 mode === m.key
                   ? "bg-purple-50 border-purple-200 text-purple-700"
@@ -176,12 +172,6 @@ function AIPanel({ question }) {
         )}
 
         {/* Error */}
-        {error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-xs">
-            {error}
-          </div>
-        )}
-
         {/* Response */}
         {response && (
           <div className="bg-purple-50 border border-purple-100 rounded-xl p-4">
@@ -217,16 +207,13 @@ export default function PastQuestionViewer() {
   const navigate   = useNavigate();
   const [question, setQuestion] = useState(null);
   const [loading,  setLoading]  = useState(true);
-  const [error,    setError]    = useState(null);
   const [iframeLoading, setIframeLoading] = useState(true);
 
   useEffect(() => {
     getPastQuestion(id)
       .then(({ question: q }) => setQuestion(q))
       .catch((err) => {
-        const message = err.message || "Failed to load past question.";
-        toast.error(message);
-        setError(message);
+        toast.error("Failed to load past question. Please try again.");
       })
       .finally(() => setLoading(false));
   }, [id]);
@@ -244,9 +231,9 @@ export default function PastQuestionViewer() {
     </div>
   );
 
-  if (error || !question) return (
+  if (!question) return (
     <div className="flex flex-col items-center gap-4 py-20 text-center">
-      <p className="text-red-500 text-sm">{error || "Past question not found."}</p>
+      <p className="text-red-500 text-sm">Past question not found.</p>
       <button onClick={() => navigate(-1)} className="text-sm text-[#1a2a5e] font-semibold hover:underline">
         ← Go back
       </button>

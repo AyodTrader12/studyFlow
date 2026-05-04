@@ -46,30 +46,25 @@ export function useResources(filters = {}) {
 export function useResource(id) {
   const [resource, setResource] = useState(null);
   const [loading,  setLoading]  = useState(true);
-  const [error,    setError]    = useState(null);
 
   useEffect(() => {
     if (!id) return;
     setLoading(true);
-    setError(null);
     getResource(id)
       .then(({ resource: r }) => setResource(r))
       .catch((err) => {
-        const message = err.message || "Failed to load resource.";
-        toast.error(message);
-        setError(message);
+        toast.error("Failed to load resource. Please try again.");
       })
       .finally(() => setLoading(false));
   }, [id]);
 
-  return { resource, loading, error };
+  return { resource, loading };
 }
 
 // ── useBookmarks ──────────────────────────────────────────────────────────────
 export function useBookmarks() {
   const [bookmarks, setBookmarks] = useState([]);
   const [loading,   setLoading]   = useState(true);
-  const [error,     setError]     = useState(null);
 
   const fetchData = useCallback(async () => {
     try {
@@ -77,9 +72,7 @@ export function useBookmarks() {
       const { bookmarks: data } = await getBookmarks();
       setBookmarks(data);
     } catch (err) {
-      const message = err.message || "Failed to load bookmarks.";
-      toast.error(message);
-      setError(message);
+      toast.error("Failed to load bookmarks. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -98,14 +91,13 @@ export function useBookmarks() {
         fetchData(); // refetch to get full resource data
       }
     } catch (err) {
-      const message = err.message || "Failed to update bookmark.";
-      toast.error(message);
+      toast.error("Failed to update bookmark. Please try again.");
     }
   };
 
   const isBookmarked = (resourceId) => bookmarks.some((b) => b._id === resourceId);
 
-  return { bookmarks, loading, error, toggle, isBookmarked, refetch: fetchData };
+  return { bookmarks, loading, toggle, isBookmarked, refetch: fetchData };
 }
 
 // ── useProgress ───────────────────────────────────────────────────────────────
@@ -193,7 +185,6 @@ export function useSummary(resourceId) {
   const [summary,    setSummary]    = useState(null);
   const [loading,    setLoading]    = useState(false);
   const [generating, setGenerating] = useState(false);
-  const [error,      setError]      = useState(null);
 
   // Try to fetch a cached summary when the component mounts
   useEffect(() => {
@@ -207,18 +198,15 @@ export function useSummary(resourceId) {
 
   const generate = async () => {
     setGenerating(true);
-    setError(null);
     try {
       const { summary: s } = await generateSummary(resourceId);
       setSummary(s);
     } catch (err) {
-      const message = err.message || "Failed to generate summary.";
-      toast.error(message);
-      setError(message);
+      toast.error("Failed to generate summary. Please try again.");
     } finally {
       setGenerating(false);
     }
   };
 
-  return { summary, loading, generating, error, generate };
+  return { summary, loading, generating, generate };
 }

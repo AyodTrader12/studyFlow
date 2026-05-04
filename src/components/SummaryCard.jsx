@@ -4,7 +4,7 @@
 import { useSummary } from "../hook/UseApi";
 
 export default function SummaryCard({ resourceId, subject }) {
-  const { summary, loading, generating, error, generate } = useSummary(resourceId);
+  const { summary, loading, generating, generate } = useSummary(resourceId);
 
   if (loading) return null;
 
@@ -48,18 +48,6 @@ export default function SummaryCard({ resourceId, subject }) {
           </svg>
           <p className="text-sm text-gray-500">Gemini is reading and summarising this resource...</p>
           <p className="text-xs text-gray-400">This takes about 5–10 seconds</p>
-        </div>
-      )}
-
-      {/* Error */}
-      {error && !generating && (
-        <div className="px-6 py-5">
-          <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm flex items-center justify-between">
-            <span>{error}</span>
-            <button onClick={generate} className="text-xs font-semibold underline ml-3 flex-shrink-0">
-              Try again
-            </button>
-          </div>
         </div>
       )}
 

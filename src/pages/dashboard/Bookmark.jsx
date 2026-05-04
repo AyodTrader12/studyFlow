@@ -108,7 +108,7 @@ function BookmarkCard({ resource, onRemove, onClick, gradientIdx }) {
 export default function DashboardBookmarks() {
   const { searchQuery } = useOutletContext();
   const navigate = useNavigate();
-  const { bookmarks, loading, error, toggle } = useBookmarks();
+  const { bookmarks, loading, toggle } = useBookmarks();
 
   const [search,     setSearch]     = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
@@ -276,13 +276,8 @@ export default function DashboardBookmarks() {
         </div>
       )}
 
-      {/* Error */}
-      {error && !loading && (
-        <div className="text-center py-12 text-red-500 text-sm">{error}</div>
-      )}
-
       {/* Empty — no bookmarks at all */}
-      {!loading && !error && bookmarks.length === 0 && (
+      {!loading && bookmarks.length === 0 && (
         <div className="flex flex-col items-center justify-center py-24 text-center gap-4">
           <div className="w-20 h-20 rounded-3xl bg-blue-50 flex items-center justify-center">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#3b6fd4" strokeWidth="1.5" strokeLinecap="round">
@@ -305,7 +300,7 @@ export default function DashboardBookmarks() {
       )}
 
       {/* Empty after filtering */}
-      {!loading && !error && bookmarks.length > 0 && filtered.length === 0 && (
+      {!loading && bookmarks.length > 0 && filtered.length === 0 && (
         <div className="text-center py-12">
           <p className="text-sm text-gray-500">No bookmarks match your search.</p>
           <button
@@ -318,7 +313,7 @@ export default function DashboardBookmarks() {
       )}
 
       {/* Flat grid mode */}
-      {!loading && !error && filtered.length > 0 && viewMode === "grid" && (
+      {!loading && filtered.length > 0 && viewMode === "grid" && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filtered.map((resource, i) => (
             <BookmarkCard
@@ -333,7 +328,7 @@ export default function DashboardBookmarks() {
       )}
 
       {/* Grouped by subject mode */}
-      {!loading && !error && filtered.length > 0 && viewMode === "grouped" && (
+      {!loading && filtered.length > 0 && viewMode === "grouped" && (
         <div className="flex flex-col gap-8">
           {subjectList.map((subject) => {
             const items = grouped[subject];

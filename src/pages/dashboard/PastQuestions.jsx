@@ -148,15 +148,12 @@ export default function PastQuestions() {
   const navigate = useNavigate();
   const [summary, setSummary] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error,   setError]   = useState(null);
 
   useEffect(() => {
     getPastQuestionsSummary()
       .then(({ summary: s }) => setSummary(s))
       .catch((err) => {
-        const message = err.message || "Failed to load past questions.";
-        toast.error(message);
-        setError(message);
+        toast.error("Failed to load past questions. Please try again.");
       })
       .finally(() => setLoading(false));
   }, []);
@@ -225,15 +222,8 @@ export default function PastQuestions() {
         </div>
       )}
 
-      {/* Error */}
-      {error && !loading && (
-        <div className="text-center py-12">
-          <p className="text-red-500 text-sm">{error}</p>
-        </div>
-      )}
-
       {/* Exam cards grid */}
-      {!loading && !error && (
+      {!loading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {EXAM_ORDER.map((examBody) => (
             <ExamCard

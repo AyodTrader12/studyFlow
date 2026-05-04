@@ -68,7 +68,6 @@ export default function PastQuestionsBrowser() {
 
   const [questions,     setQuestions]     = useState([]);
   const [loading,       setLoading]       = useState(true);
-  const [error,         setError]         = useState(null);
   const [activeSubject, setActiveSubject] = useState(subjectParam || "All Subjects");
 
   const meta = EXAM_META[examBodyParam] || EXAM_META["Other"];
@@ -84,9 +83,7 @@ export default function PastQuestionsBrowser() {
         });
         setQuestions(q);
       } catch (err) {
-        const message = err.message || "Failed to load past questions.";
-        toast.error(message);
-        setError(message);
+        toast.error("Failed to load past questions. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -158,13 +155,8 @@ export default function PastQuestionsBrowser() {
         </div>
       )}
 
-      {/* Error */}
-      {error && !loading && (
-        <p className="text-center text-red-500 text-sm py-10">{error}</p>
-      )}
-
       {/* Empty */}
-      {!loading && !error && questions.length === 0 && (
+      {!loading && questions.length === 0 && (
         <div className="flex flex-col items-center py-20 text-center gap-4">
           <div className="text-5xl">📭</div>
           <p className="text-base font-bold text-[#1a2a5e]">No past questions yet</p>
