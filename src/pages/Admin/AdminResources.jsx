@@ -7,7 +7,7 @@ import { useState, useEffect,useRef } from "react";
 import { useNavigate, useOutletContext} from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useResources } from "../../hook/UseApi";
-import { createResource, deleteResource } from "../../api/ResourceApi";
+import { createResource, deleteResource,updateResource } from "../../api/ResourceApi";
 import { SUBJECTS } from "../../utils/Resourceutils";
 
 const LEVELS = ["JSS1", "JSS2", "JSS3", "SS1", "SS2", "SS3", "All Levels"];
