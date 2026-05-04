@@ -3,17 +3,13 @@
 // When a YouTube URL is pasted, backend auto-fetches title/thumbnail/duration.
 // Shows a preview before saving.
 
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import { useNavigate, useOutletContext} from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useResources } from "../../hook/UseApi";
 import { createResource, deleteResource } from "../../api/ResourceApi";
 import { SUBJECTS } from "../../utils/Resourceutils";
-const SUBJECTS = [
-  "Mathematics", "English Language", "Biology", "Chemistry", "Physics",
-  "Economics", "Government", "Literature", "Geography", "Agriculture",
-  "Further Mathematics", "Civic Education", "Commerce",
-];
+
 const LEVELS = ["JSS1", "JSS2", "JSS3", "SS1", "SS2", "SS3", "All Levels"];
 
 const TYPE_META = {
