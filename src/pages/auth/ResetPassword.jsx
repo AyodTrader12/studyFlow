@@ -134,7 +134,7 @@ export default function ResetPassword() {
       }
 
       // Success — go to login with a success message
-      navigate("/login", { state: { passwordReset: true } });
+      navigate("/auth/login", { state: { passwordReset: true } });
 
     } catch {
       toast.error("Something went wrong. Please try again.");
