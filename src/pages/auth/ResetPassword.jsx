@@ -140,7 +140,7 @@ export default function ResetPassword() {
       toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
-    }
+    } 
   };
 
   const mismatch = confirmPwd && confirmPwd !== newPwd;

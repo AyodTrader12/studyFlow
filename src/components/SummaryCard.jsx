@@ -52,7 +52,7 @@ export default function SummaryCard({ resourceId, subject }) {
       )}
 
       {/* Empty state */}
-      {!summary && !generating && !error && (
+      {!summary && !generating && (
         <div className="px-6 py-8 text-center">
           <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center mx-auto mb-3">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="1.6" strokeLinecap="round">
