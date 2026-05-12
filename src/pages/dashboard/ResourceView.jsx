@@ -38,10 +38,13 @@ function toYouTubeEmbed(url) {
     // rel=0            → only show videos from the same channel (not random)
     // modestbranding=1 → hide YouTube logo in the control bar
     // iv_load_policy=3 → disable annotation overlays on the video
+    // playlist=ID      → playing a playlist of just this video hides recommendations
+    // fs=1             → allow fullscreen button
     const params = new URLSearchParams({
       rel:            "0",
       modestbranding: "1",
       iv_load_policy: "3",
+      playlist:       id,   // suppress "more videos" end-screen recommendations
       fs:             "1",  // allow fullscreen button
     });
  
