@@ -19,21 +19,43 @@ const TYPE_META = {
   article: { label: "Article", badgeClass: "bg-green-50 text-green-600" },
 };
 
+
 function toYouTubeEmbed(url) {
   try {
     const u = new URL(url);
     let id  = u.searchParams.get("v");
-    if (!id && u.hostname === "youtu.be") id = u.pathname.slice(1);
-    if (!id && u.pathname.includes("/embed/")) return url;
-    return id ? `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1` : url;
-  } catch { return url; }
+ 
+    if (!id && u.hostname === "youtu.be")         id = u.pathname.slice(1).split("?")[0];
+    if (!id && u.pathname.includes("/shorts/"))   id = u.pathname.split("/shorts/")[1]?.split("?")[0];
+    if (!id && u.pathname.includes("/embed/"))    id = u.pathname.split("/embed/")[1]?.split("?")[0];
+ 
+    if (!id) return url;
+ 
+    // youtube-nocookie.com = privacy-enhanced mode.
+    // It suppresses the "More videos" end-screen panel more aggressively
+    // than youtube.com because it doesn't serve personalised recommendations.
+    //
+    // rel=0            → only show videos from the same channel (not random)
+    // modestbranding=1 → hide YouTube logo in the control bar
+    // iv_load_policy=3 → disable annotation overlays on the video
+    const params = new URLSearchParams({
+      rel:            "0",
+      modestbranding: "1",
+      iv_load_policy: "3",
+      fs:             "1",  // allow fullscreen button
+    });
+ 
+    return `https://www.youtube-nocookie.com/embed/${id}?${params.toString()}`;
+  } catch {
+    return url;
+  }
 }
-
+ 
 function toPDFViewer(url) {
   if (url.includes("docs.google.com/viewer")) return url;
   return `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
 }
-
+ 
 // ── Notes markdown renderer ───────────────────────────────────────────────────
 function renderInline(text) {
   const parts = [];
@@ -49,27 +71,27 @@ function renderInline(text) {
   }
   return parts.length === 1 && typeof parts[0]?.props?.children === "string" ? parts[0].props.children : parts;
 }
-
+ 
 function NotesRenderer({ content }) {
   if (!content) return null;
   const lines = content.split("\n");
   const els   = [];
   let   i     = 0;
-
+ 
   while (i < lines.length) {
     const line = lines[i];
     if (line.startsWith("# "))   { els.push(<h1 key={i} className="text-2xl font-extrabold text-[#1a2a5e] mt-8 mb-4 pb-2 border-b-2 border-blue-100">{line.slice(2)}</h1>); i++; continue; }
     if (line.startsWith("## "))  { els.push(<h2 key={i} className="text-xl font-bold text-[#1a2a5e] mt-6 mb-3">{line.slice(3)}</h2>); i++; continue; }
     if (line.startsWith("### ")) { els.push(<h3 key={i} className="text-base font-bold text-[#1a2a5e] mt-5 mb-2">{line.slice(4)}</h3>); i++; continue; }
     if (line.startsWith("---"))  { els.push(<hr key={i} className="my-6 border-gray-200" />); i++; continue; }
-
+ 
     if (line.startsWith("```")) {
       const code = []; i++;
       while (i < lines.length && !lines[i].startsWith("```")) { code.push(lines[i]); i++; }
       els.push(<pre key={`c${i}`} className="bg-gray-50 border border-gray-200 rounded-xl px-5 py-4 my-4 overflow-x-auto text-sm font-mono text-gray-700 leading-relaxed"><code>{code.join("\n")}</code></pre>);
       i++; continue;
     }
-
+ 
     if (line.startsWith("|")) {
       const rows = []; while (i < lines.length && lines[i].startsWith("|")) { rows.push(lines[i]); i++; }
       const dataRows = rows.filter((r) => !r.match(/^\|[-| ]+\|$/));
@@ -83,40 +105,40 @@ function NotesRenderer({ content }) {
       );
       continue;
     }
-
+ 
     if (line.startsWith("- ") || line.startsWith("* ")) {
       const items = []; while (i < lines.length && (lines[i].startsWith("- ") || lines[i].startsWith("* "))) { items.push(lines[i].slice(2)); i++; }
       els.push(<ul key={`u${i}`} className="my-3 flex flex-col gap-1.5 pl-5">{items.map((item, idx) => <li key={idx} className="text-gray-700 text-sm leading-relaxed list-disc">{renderInline(item)}</li>)}</ul>);
       continue;
     }
-
+ 
     if (/^\d+\.\s/.test(line)) {
       const items = []; while (i < lines.length && /^\d+\.\s/.test(lines[i])) { items.push(lines[i].replace(/^\d+\.\s/, "")); i++; }
       els.push(<ol key={`o${i}`} className="my-3 flex flex-col gap-1.5 pl-6">{items.map((item, idx) => <li key={idx} className="text-gray-700 text-sm leading-relaxed list-decimal">{renderInline(item)}</li>)}</ol>);
       continue;
     }
-
+ 
     if (line.trim() === "") { i++; continue; }
     els.push(<p key={i} className="text-gray-700 text-sm leading-relaxed my-2">{renderInline(line)}</p>);
     i++;
   }
   return <div>{els}</div>;
 }
-
+ 
 // ── Main viewer ───────────────────────────────────────────────────────────────
 export default function ResourceViewer() {
   const { id }   = useParams();
   const navigate = useNavigate();
   useOutletContext(); // keeps context alive
-
-  const { resource, loading } = useResource(id);
+ 
+  const { resource, loading, error } = useResource(id);
   const { markViewed }               = useProgress();
   const { isBookmarked, toggle }     = useBookmarks();
-
+ 
   const [iframeLoading, setIframeLoading] = useState(true);
   const markedRef = useRef(false);
   const startTime = useRef(Date.now());
-
+ 
   // Mark as viewed once — records time spent when component unmounts
   useEffect(() => {
     if (resource && !markedRef.current) {
@@ -130,7 +152,7 @@ export default function ResourceViewer() {
       }
     };
   }, [resource]); // eslint-disable-line
-
+ 
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <svg className="animate-spin h-8 w-8 text-[#1a2a5e]" viewBox="0 0 24 24" fill="none">
@@ -139,25 +161,25 @@ export default function ResourceViewer() {
       </svg>
     </div>
   );
-
-  if (!resource) return (
+ 
+  if (error || !resource) return (
     <div className="flex flex-col items-center gap-4 py-20 text-center">
-      <p className="text-red-500 text-sm">Resource not found.</p>
+      <p className="text-red-500 text-sm">{error || "Resource not found."}</p>
       <button onClick={() => navigate(-1)} className="text-sm text-[#1a2a5e] font-semibold hover:underline">
         ← Go back
       </button>
     </div>
   );
-
+ 
   const meta = TYPE_META[resource.type] || TYPE_META.article;
   const embedUrl =
     resource.type === "youtube" ? toYouTubeEmbed(resource.url) :
     resource.type === "pdf"     ? toPDFViewer(resource.url)    :
     resource.url;
-
+ 
   return (
     <div className="flex flex-col gap-5 max-w-4xl">
-
+ 
       {/* Back */}
       <button
         onClick={() => navigate(-1)}
@@ -168,7 +190,7 @@ export default function ResourceViewer() {
         </svg>
         Back to Resources
       </button>
-
+ 
       {/* Meta card */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col sm:flex-row sm:items-start gap-4">
         <div className="flex-1 min-w-0">
@@ -199,7 +221,7 @@ export default function ResourceViewer() {
             {resource.views > 0 && <span>👁 {resource.views} views</span>}
           </div>
         </div>
-
+ 
         {/* Bookmark button */}
         <button
           onClick={() => toggle(resource._id)}
@@ -219,10 +241,10 @@ export default function ResourceViewer() {
           {isBookmarked(resource._id) ? "Bookmarked" : "Bookmark"}
         </button>
       </div>
-
+ 
       {/* Content area */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-
+ 
         {/* YouTube */}
         {resource.type === "youtube" && (
           <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
@@ -244,7 +266,7 @@ export default function ResourceViewer() {
             />
           </div>
         )}
-
+ 
         {/* PDF */}
         {resource.type === "pdf" && (
           <div className="relative w-full" style={{ height: "80vh", minHeight: "500px" }}>
@@ -265,7 +287,7 @@ export default function ResourceViewer() {
             />
           </div>
         )}
-
+ 
         {/* Notes — rendered in-app */}
         {resource.type === "notes" && (
           <div className="px-7 py-7 max-w-3xl">
@@ -290,7 +312,7 @@ export default function ResourceViewer() {
             </div>
           </div>
         )}
-
+ 
         {/* Article */}
         {resource.type === "article" && (
           <div className="relative w-full" style={{ height: "80vh", minHeight: "500px" }}>
@@ -329,10 +351,15 @@ export default function ResourceViewer() {
           </div>
         )}
       </div>
-
+ 
       {/* Gemini AI Summary — shown below every resource */}
       <SummaryCard resourceId={resource._id} subject={resource.subject} />
-
+ 
     </div>
   );
 }
+ 
+
+
+
+
